@@ -56,7 +56,6 @@ public class VMProfileView extends AbstractConsoleView {
             cpuSampler_.update();
             super.sleep(100);
         }
-
     }
 
     @Override

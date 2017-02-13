@@ -100,14 +100,14 @@ public class CPUSampler {
             } else {
                 Long deltaCpuTime = (cpuTime - tCPUTime);
 
-                if (ti.getStackTrace().length > 0 && ti.getThreadState() == State.RUNNABLE) {
+                if (ti.getStackTrace().length > 0) {
                     for (StackTraceElement stElement : ti.getStackTrace()) {
                         if (isReallySleeping(stElement)) {
                             break;
                         }
-                        if (isFiltered(stElement)) {
-                            continue;
-                        }
+//                        if (isFiltered(stElement)) {
+//                            continue;
+//                        }
                         String key = stElement.getClassName() + "."
                                 + stElement.getMethodName();
                         data_.putIfAbsent(key, new MethodStats(stElement.getClassName(),

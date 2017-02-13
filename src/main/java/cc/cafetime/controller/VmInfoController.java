@@ -2,6 +2,7 @@ package cc.cafetime.controller;
 
 import cc.cafetime.info.VmBasicInfo;
 import cc.cafetime.info.VmMonitorInfo;
+import cc.cafetime.info.VmProfileListInfo;
 import cc.cafetime.info.VmThreadListInfo;
 import com.jvmtop.monitor.JstatInfo;
 import net.sf.json.JSONArray;
@@ -47,5 +48,11 @@ public class VmInfoController {
     public String vmThreadCount(@PathVariable("id") int id) {
         Map<String, Object> map = VmMonitorInfo.getThreadCount(id);
         return JSONObject.fromObject(map).toString();
+    }
+
+    @ResponseBody
+    @RequestMapping("/vm_profile_list/{id}/{count}")
+    public String vmProfileList(@PathVariable("id") int id, @PathVariable("count") int count) {
+        return JSONArray.fromObject(VmProfileListInfo.getInfo(id, count)).toString();
     }
 }

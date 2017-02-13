@@ -10,8 +10,8 @@ $(function() {
                             <td>{{TID}}</td>\n\
                             <td>{{Name}}</td>\n\
                             <td>{{State}}</td>\n\
-                            <td>{{CPU}}</td>\n\
-                            <td>{{TotalCPU}}</td>\n\
+                            <td>{{CPU}}%</td>\n\
+                            <td>{{TotalCPU}}%</td>\n\
                             <td>{{BlockedBy}}</td>\n\
                         </tr>';
     var listCount = 25;
@@ -27,7 +27,7 @@ $(function() {
     }
 
     var freshThreadCount = function(data) {
-        if(data.error){
+        if (data.error) {
             return false;
         }
         var count = data.ThreadCount;
@@ -35,18 +35,18 @@ $(function() {
     }
 
     setInterval(function() {
-            if (!$("#thread-panel").is(':visible')) {
-                return;
-            }
-            $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(data){
-                freshThreadList(eval("(" + data + ")"));
-            });
-            $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(data){
-                freshThreadCount(eval("(" + data + ")"));
-            });
+        if (!$("#thread-panel").is(':visible')) {
+            return;
+        }
+        $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(data) {
+            freshThreadList(eval("(" + data + ")"));
+        });
+        $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(data) {
+            freshThreadCount(eval("(" + data + ")"));
+        });
     }, 1000);
 
-    $(".thread-list-count").change(function(){
+    $(".thread-list-count").change(function() {
         listCount = $(this).val();
     });
 
