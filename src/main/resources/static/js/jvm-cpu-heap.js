@@ -1,5 +1,5 @@
 $(function() {
-    var serverBasic = '/';
+    var serverBasic = 'http://'+location.host+'/';
     var option1 = {
         tooltip: {
             formatter: "{a} <br/>{b} : {c}%"

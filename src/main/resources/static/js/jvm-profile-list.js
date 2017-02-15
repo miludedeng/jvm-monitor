@@ -1,5 +1,5 @@
 $(function() {
-    var serverBasic = '/';
+    var serverBasic = 'http://'+location.host+'/';
 
     var trTemplate = '<tr class="odd gradeX">\n\
                             <td>{{Method}}</td>\n\

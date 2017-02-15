@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 $(function() {
-    var serverBasic = '/';
+    var serverBasic = 'http://'+location.host+'/';
     var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="vm-title" href="javascript:;"><img src="../dist/app-icon/{{app_icon}}"> {{name}} (pid {{pid}})</a></li>';
     var vmBasicInfoTemplate = '<div>\n\
                                 <strong>{{key}}</strong>\n\
