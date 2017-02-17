@@ -57,7 +57,6 @@
                     <exclude>**/static/less/**</exclude>
                     <exclude>**/static/node_modules/**</exclude>
                     <exclude>**/static/gulpfile.js</exclude>
-                    <exclude>**/static/index.html</exclude>
                     <exclude>**/static/package.json</exclude>
                     <exclude>**/static/bower.json</exclude>
                 </excludes>
@@ -74,9 +73,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>cc.cafetime.App</mainClass>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -85,9 +81,6 @@
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
-                    <compilerArguments>
-                        <extdirs>${project.basedir}/lib</extdirs>
-                    </compilerArguments>
                 </configuration>
             </plugin>
             <plugin>
