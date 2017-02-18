@@ -80,35 +80,36 @@ $(function() {
         var vmId = $(this).attr('data-vm-id');
         $("#vm-id").val(vmId);
         var url = serverBasic + "/vm_basic_info/" + vmId;
-        $.get(url, function(data) {
-            var jsonData = eval("(" + data + ")");
-            if (jsonData.Error) {
-                var temp = vmBasicInfoTemplate.replace(/{{key}}/g, "Error").replace(/{{value}}/g, jsonData.Error);
-                $('.basic-info').html(temp);
-                return;
+        $.get(url, function(response) {
+            response = eval("(" + response + ")");
+            if("success"==response.status){
+                data = response.data;
+            }else{
+                console.log(responsea.message);
+                return false;
             }
             $('.basic-info').html("");
             var keys = ["PID", "User", "Vendor", "VmName", "VmVersion"];
             for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
-                var value = jsonData[key];
+                var value = data[key];
                 var temp = vmBasicInfoTemplate.replace(/{{key}}/g, key+": ").replace(/{{value}}/g, value);
                 $('.basic-info').append(temp);
             }
-            var systemProps = jsonData.SystemProperties;
+            var systemProps = data.SystemProperties;
             $('#sysprops').html("");
             for(var key in systemProps){
             	var value = systemProps[key];
             	var temp = vmBasicInfoTemplate.replace(/{{key}}/g, key+"=").replace(/{{value}}/g, value);
             	$('#sysprops').append(temp);
             }
-            var vmArgs = jsonData.VmArgs;
+            var vmArgs = data.VmArgs;
             $('#vmargs').html("");
             for(var i=0; i<vmArgs.length; i++){
             	var temp = vmArgsTemplate.replace(/{{value}}/g, vmArgs[i]);
             	$('#vmargs').append(temp);
             }
-            var args = jsonData.Args;
+            var args = data.Args;
             $('#args').html("");
             if(args instanceof Array){
             	for(var i=0; i<args.length; i++){
@@ -119,7 +120,6 @@ $(function() {
             	var temp = vmArgsTemplate.replace(/{{value}}/g, args);
             	$('#args').append(temp);
             }
-            console.log(jsonData);
         });
     });
 

@@ -26,7 +26,7 @@ $(function() {
             $.get(serverBasic + '/vm_mon_info/' + $("#vm-id").val(), function(response) {
                 response = eval("(" + response + ")");
                 if("success"==response.status){
-                     freshProfileListo(response.data);
+                     freshProfileList(response.data);
                 }else{
                      console.log(responsea.message);
                 }

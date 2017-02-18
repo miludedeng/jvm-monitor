@@ -36,7 +36,7 @@ $(function() {
         $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(response) {
             response = eval("(" + response + ")");
             if("success"==response.status){
-                freshThreadListt(response.data);
+                freshThreadList(response.data);
             }else{
                 console.log(responsea.message);
             }

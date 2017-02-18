@@ -85,7 +85,7 @@ $(function() {
             $.get(serverBasic + '/vm_mon_info/' + $("#vm-id").val(), function(response) {
                 response = eval("(" + response + ")");
                 if("success"==response.status){
-                     freshVmMonitoro(response.data);
+                     freshVmMonitor(response.data);
                 }else{
                      console.log(responsea.message);
                 }
