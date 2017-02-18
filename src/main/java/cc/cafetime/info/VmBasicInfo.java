@@ -10,29 +10,23 @@ import java.util.*;
  */
 public class VmBasicInfo {
 
-    public static Map<String, Object> getInfo(int vmId) {
+    public static Map<String, Object> getInfo(int vmId) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         VMInfo vmInfo = VmListInfo.vmInfoMap.get(vmId);
         if (vmInfo == null) {
-            map.put("error", "no such vm");
-            return map;
+            throw new RuntimeException("no such vm");
         }
         try {
             vmInfo.update();
         } catch (Exception e) {
-            e.printStackTrace();
-            map.put("error", "vm update failed");
-            return map;
+            throw new RuntimeException("vm update failed");
         }
         if (vmInfo.getState() == VMInfoState.ATTACHED_UPDATE_ERROR) {
-            map.put("error", "Could not fetch telemetries - Process terminated?");
-            return map;
+            throw new RuntimeException("Could not fetch telemetries - Process terminated?");
         }
         if (vmInfo.getState() != VMInfoState.ATTACHED) {
-            map.put("error", "Could not attach to process.");
-            return map;
+            throw new RuntimeException("Could not attach to process.");
         }
-
 
         Map<String, String> properties = vmInfo.getSystemProperties();
         map.put("PID",vmInfo.getId());
@@ -53,4 +47,5 @@ public class VmBasicInfo {
         map.put("VmVersion", properties.get("java.version"));
         return map;
     }
+
 }

@@ -30,12 +30,12 @@ public class VmListInfo {
         return vmList;
     }
 
-    public List<Object> getList() {
+    public List<Object> getList() throws Exception {
         scanForNewVMs();
         try {
             updateVMs(vmInfoList);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("update failed");
         }
         Collections.sort(vmInfoList, VMInfo.CPU_LOAD_COMPARATOR);
         List<Object> vmDataList = new ArrayList<Object>();
@@ -47,8 +47,8 @@ public class VmListInfo {
             if (entryPointClass != null && entryPointClass.length() > 0) {
                 applicationType = new MainClassApplicationTypeFactory().getApplicationType(entryPointClass);
             }
-            vmInfoMap.put("Name",applicationType != null?applicationType.getName():entryPointClass);
-            vmInfoMap.put("Icon",applicationType != null?applicationType.getIcon():"application.png");
+            vmInfoMap.put("Name", applicationType != null ? applicationType.getName() : entryPointClass);
+            vmInfoMap.put("Icon", applicationType != null ? applicationType.getIcon() : "application.png");
             vmInfoMap.put("VmID", vmId);
             if (vmInfo.getState() == VMInfoState.ATTACHED) {
                 String deadlockState = "";
@@ -69,12 +69,9 @@ public class VmListInfo {
         return vmDataList;
     }
 
-    private void updateVMs(List<VMInfo> vmList) {
-        try {
-            for (VMInfo vmInfo : vmList) {
-                vmInfo.update();
-            }
-        } catch (Exception e) {
+    private void updateVMs(List<VMInfo> vmList) throws Exception {
+        for (VMInfo vmInfo : vmList) {
+            vmInfo.update();
         }
     }
 
@@ -90,7 +87,7 @@ public class VmListInfo {
             if (!vmMap.containsKey(vmid)) {
                 VMInfo vmInfo = VMInfo.processNewVM(localvm, vmid);
                 vmInfoList.add(vmInfo);
-                vmInfoMap.put(vmid,vmInfo);
+                vmInfoMap.put(vmid, vmInfo);
             }
         }
         vmMap = machines;

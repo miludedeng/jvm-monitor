@@ -22,8 +22,15 @@ $(function() {
         if (!$("#profile-panel").is(':visible')) {
             return;
         }
-        $.get(serverBasic + '/vm_profile_list/' + $("#vm-id").val() + "/" + listCount, function(data) {
-            freshProfileList(eval("(" + data + ")"));
+        $.get(serverBasic + '/vm_profile_list/' + $("#vm-id").val() + "/" + listCount, function(response) {
+            $.get(serverBasic + '/vm_mon_info/' + $("#vm-id").val(), function(response) {
+                response = eval("(" + response + ")");
+                if("success"==response.status){
+                     freshProfileListo(response.data);
+                }else{
+                     console.log(responsea.message);
+                }
+            });
         });
     }, 1000);
 

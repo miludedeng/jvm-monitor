@@ -33,11 +33,21 @@ $(function() {
         if (!$("#thread-panel").is(':visible')) {
             return;
         }
-        $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(data) {
-            freshThreadList(eval("(" + data + ")"));
+        $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(response) {
+            response = eval("(" + response + ")");
+            if("success"==response.status){
+                freshThreadListt(response.data);
+            }else{
+                console.log(responsea.message);
+            }
         });
-        $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(data) {
-            freshThreadCount(eval("(" + data + ")"));
+        $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(response) {
+            response = eval("(" + response + ")");
+            if("success"==response.status){
+                freshThreadCount(response.data);
+            }else{
+                console.log(responsea.message);
+            }
         });
     }, 1000);
 

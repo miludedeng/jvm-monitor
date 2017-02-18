@@ -30,49 +30,29 @@ public class VmThreadListInfo {
         return listInfo;
     }
 
-    public List<Map<String, Object>> getInfo(int vmId, int numberOfDisplayedThreads) {
+    public List<Map<String, Object>> getInfo(int vmId, int numberOfDisplayedThreads) throws Exception {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         VMInfo vmInfo = VmListInfo.vmInfoMap.get(vmId);
         if (vmInfo == null) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("error", "no such vm");
-            list.add(map);
-            return list;
+             throw new RuntimeException("no such vm");
         }
         try {
             vmInfo.update();
         } catch (Exception e) {
-            e.printStackTrace();
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("error", "vm update failed");
-            list.add(map);
-            return list;
+            throw new RuntimeException("vm update failed");
         }
         if (vmInfo.getState() == VMInfoState.ATTACHED_UPDATE_ERROR) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("error", "Could not fetch telemetries - Process terminated?");
-            list.add(map);
-            return list;
+            throw new RuntimeException("Could not fetch telemetries -Process terminated?");
         }
         if (vmInfo.getState() != VMInfoState.ATTACHED) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("error", "Could not attach to process.");
-            list.add(map);
-            return list;
+            throw new RuntimeException("Could not attach to process.");
         }
         if (!vmInfo.getThreadMXBean().isThreadCpuTimeSupported()) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("error", "Thread CPU telemetries are not available on the monitored jvm/platform");
-            list.add(map);
-            return list;
+            throw new RuntimeException("Thread CPU telemetries are not available on the monitored jvm/platform");
         }
-
-        //TODO: move this into VMInfo?
         Map<Long, Long> newThreadCPUMillis = new HashMap<Long, Long>();
-
         Map<Long, Long> cpuTimeMap = new TreeMap<Long, Long>();
-
         for (Long tid : vmInfo.getThreadMXBean().getAllThreadIds()) {
             long threadCpuTime = vmInfo.getThreadMXBean().getThreadCpuTime(tid);
             long deltaThreadCpuTime = 0;
