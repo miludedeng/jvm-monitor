@@ -13,9 +13,10 @@ import org.springframework.stereotype.Controller;
 @ComponentScan
 public class App {
 
-    public static String RESPONSE_STATUS_SUCCESS="success";
-    public static String RESPONSE_STATUS_FAILED="failed";
+    public static final String RESPONSE_STATUS_SUCCESS="success";
+    public static final String RESPONSE_STATUS_FAILED="failed";
 
+    public static final String RESPONSE_STATUS_AUTHCODE_OVERTIME = "authcode_overtime";
 
     public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(App.class, args);

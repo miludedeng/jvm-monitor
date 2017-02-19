@@ -87,6 +87,7 @@ public class VmThreadListInfo {
                     e.printStackTrace();
                 }
                 map.put("BlockedBy", getBlockedThread(info));
+                map.put("Detail",info.getStackTrace());
             }
             list.add(map);
         }

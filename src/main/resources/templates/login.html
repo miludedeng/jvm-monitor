@@ -44,19 +44,23 @@
                     <div class="panel-body">
                         <form action="do_login" role="form" method="post">
                             <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                <div class="form-group sr-only" id="msg-wrapper">
+                                   <label class="res-message" style="color:#bf0202"></label>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="用户名" id="username" name="username" type="text" >
                                 </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="密码" id="password" name="password" type="password" value="">
+                                </div>
+                                <div class="form-group col-md-7 col-xs-7" style="padding-left: 0px;padding-right: 0px;">
+                                    <input class="form-control" placeholder="验证码" id="authcode" name="authcode" type="text" value="">
+                                </div>
+                                <div class="form-group col-md-4 col-xs-4">
+                                    <img id="auth-code" src="" onclick="this.src='authcode?'+new Date().getTime()" style="height:30px" />
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Login" />
+                                <input type="button" id="login-btn" class="btn btn-lg btn-success btn-block" value="登录" />
                             </fieldset>
                         </form>
                     </div>
@@ -77,6 +81,47 @@
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
+    <script>
+    $(function(){
+        var refreshAuthcode = function(){
+            var src= 'authcode?'+new Date().getTime();
+            document.getElementById('auth-code').src = src;
+        }
+
+        refreshAuthcode();
+
+        var addMessage = function(text){
+            $('#msg-wrapper').removeClass('sr-only');
+            $('.res-message').text(text);
+            refreshAuthcode();
+        }
+
+        var doLogin = function(){
+            $.post("do_login",{username: $('#username').val(), password: $('#password').val(), authcode : $('#authcode').val()},function(response){
+                if("success"==response){
+                    location.href='index';
+                }else if("failed"==response){
+                    addMessage("用户名或密码错误！");
+                }else if("authcode_overtime"==response){
+                    addMessage("验证码超时，请点击验证码图片，重新输入！");
+                }
+            });
+        }
+
+        $("#login-btn").click(function(){
+            // verify authcode
+            $.get("authcode_verify",{authcode : $('#authcode').val()},function(response){
+                if("success"==response){
+                    doLogin();
+                }else if("failed"==response){
+                    addMessage("验证码错误！");
+                }else if("authcode_overtime"==response){
+                    addMessage("验证码超时，请点击验证码图片，重新输入！");
+                }
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>

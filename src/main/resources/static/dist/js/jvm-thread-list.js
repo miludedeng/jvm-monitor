@@ -13,6 +13,7 @@ $(function() {
                             <td>{{CPU}}%</td>\n\
                             <td>{{TotalCPU}}%</td>\n\
                             <td>{{BlockedBy}}</td>\n\
+                            <td><input type="button" value="view" class="btn btn-default btn-sm btn-thread-view"  data-toggle="modal" data-target="#threadModal" data-info="{{Detail}}"></td>\n\
                         </tr>';
     var listCount = 25;
     var freshThreadList = function(data) {
@@ -59,5 +60,20 @@ $(function() {
     $(".thread-list-count").change(function() {
         listCount = $(this).val();
     });
+
+    $("#thread-list").on('click','.btn-thread-view',function(){
+//        $('#thread-id').val($(this).attr('data-id'));
+    });
+
+    $('#threadModal').on('show.bs.modal', function () {
+        $.get(serverBasic + '/vm_thread_info/' +  $('#thread-id').val(), function(response) {
+            response = eval("(" + response + ")");
+            if("success"==response.status){
+                freshThreadCount(response.data);
+            }else{
+                console.log(response.message);
+            }
+        });
+    })
 
 });
