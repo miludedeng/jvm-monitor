@@ -38,7 +38,7 @@ $(function() {
             if("success"==response.status){
                 freshThreadList(response.data);
             }else{
-                console.log(responsea.message);
+                console.log(response.message);
             }
         });
         $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(response) {
@@ -46,7 +46,7 @@ $(function() {
             if("success"==response.status){
                 freshThreadCount(response.data);
             }else{
-                console.log(responsea.message);
+                console.log(response.message);
             }
         });
     }, 1000);

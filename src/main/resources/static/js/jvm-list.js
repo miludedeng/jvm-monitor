@@ -40,7 +40,7 @@ $(function() {
              if("success"==response.status){
                 freshVmList(response.data);
              }else{
-                console.log(responsea.message);
+                console.log(response.message);
              }
         });
     }
@@ -67,7 +67,7 @@ $(function() {
             if("success"==response.status){
                 freshOsInfo(response.data);
             }else{
-                console.log(responsea.message);
+                console.log(response.message);
             }
         });
     }
@@ -85,7 +85,7 @@ $(function() {
             if("success"==response.status){
                 data = response.data;
             }else{
-                console.log(responsea.message);
+                console.log(response.message);
                 return false;
             }
             $('.basic-info').html("");
@@ -121,6 +121,8 @@ $(function() {
             	$('#args').append(temp);
             }
         });
+        if(!$("#page-wrapper-begin").hasClass('sr-only')) $("#page-wrapper-begin").addClass("sr-only");
+        if($("#page-wrapper").hasClass('sr-only')) $("#page-wrapper").removeClass("sr-only");
     });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

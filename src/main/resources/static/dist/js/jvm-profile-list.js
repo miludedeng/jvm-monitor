@@ -33,7 +33,7 @@ $(function() {
                 if("success"==response.status){
                      freshProfileList(response.data);
                 }else{
-                     console.log(responsea.message);
+                     console.log(response.message);
                 }
             });
         });

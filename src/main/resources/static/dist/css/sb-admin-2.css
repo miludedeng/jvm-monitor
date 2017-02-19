@@ -9,7 +9,7 @@ body {
 #wrapper {
   width: 100%;
 }
-#page-wrapper {
+.page-wrapper {
   padding: 0 15px;
   min-height: 568px;
   background-color: white;
@@ -18,7 +18,7 @@ body {
   overflow: hidden;
 }
 @media (min-width: 768px) {
-  #page-wrapper {
+  .page-wrapper {
     position: inherit;
     margin: 0 0 0 250px;
     padding: 0 30px;

@@ -92,7 +92,7 @@ $(function() {
                 if("success"==response.status){
                      freshVmMonitor(response.data);
                 }else{
-                     console.log(responsea.message);
+                     console.log(response.message);
                 }
             });
         });
