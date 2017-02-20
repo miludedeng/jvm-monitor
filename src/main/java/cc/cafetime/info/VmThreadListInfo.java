@@ -53,7 +53,9 @@ public class VmThreadListInfo {
         }
         Map<Long, Long> newThreadCPUMillis = new HashMap<Long, Long>();
         Map<Long, Long> cpuTimeMap = new TreeMap<Long, Long>();
-        for (Long tid : vmInfo.getThreadMXBean().getAllThreadIds()) {
+        Map<Long, ThreadInfo> threadInfoMap = new HashMap<Long, ThreadInfo>();
+        for (ThreadInfo info : vmInfo.getThreadMXBean().dumpAllThreads(true, true)) {
+            long tid = info.getThreadId();
             long threadCpuTime = vmInfo.getThreadMXBean().getThreadCpuTime(tid);
             long deltaThreadCpuTime = 0;
             if (previousThreadCPUMillis.containsKey(tid)) {
@@ -62,13 +64,14 @@ public class VmThreadListInfo {
                 cpuTimeMap.put(tid, deltaThreadCpuTime);
             }
             newThreadCPUMillis.put(tid, threadCpuTime);
+            threadInfoMap.put(tid,info);
         }
 
         cpuTimeMap = CommonUtil.sortByValue(cpuTimeMap, true);
 
         int displayedThreads = 0;
         for (Long tid : cpuTimeMap.keySet()) {
-            ThreadInfo info = vmInfo.getThreadMXBean().getThreadInfo(tid);
+            ThreadInfo info = threadInfoMap.get(tid);
             displayedThreads++;
             if (displayedThreads > numberOfDisplayedThreads
                     && displayedThreadLimit) {
