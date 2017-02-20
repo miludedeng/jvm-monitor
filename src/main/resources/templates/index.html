@@ -107,7 +107,18 @@
         font-size: 18px;
         color: #337ab7;
     }
-
+    .thread-modal-body {
+        overflow-y: scroll;
+        margin:20px;
+    }
+    .th-stack-line {
+        white-space: nowrap;
+        margin-bottom: 8px;
+    }
+    @media (min-width: 768px)
+    .modal-dialog {
+        width: 800px;
+    }
     </style>
 </head>
 
@@ -409,12 +420,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    模态框（Modal）标题
+                <h4 class="thread-modal-title">
+                    Stack Track
                 </h4>
             </div>
-            <div class="modal-body">
-                在这里添加一些文本
+            <div class="thread-modal-body">
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->

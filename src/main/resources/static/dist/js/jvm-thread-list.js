@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 $(function() {
-    var serverBasic = 'http://'+location.host+'/';
+    var serverBasic = 'http://' + location.host + '/';
 
     var trTemplate = '<tr class="odd gradeX">\n\
                             <td>{{TID}}</td>\n\
@@ -22,7 +22,16 @@ $(function() {
             if (data[i].error) {
                 continue;
             }
-            var temp = trTemplate.replace(/{{TID}}/g, data[i].TID).replace(/{{Name}}/g, data[i].Name).replace(/{{State}}/g, data[i].State).replace(/{{CPU}}/g, data[i].CPU.toFixed(2)).replace(/{{TotalCPU}}/g, data[i].TotalCPU.toFixed(2)).replace(/{{BlockedBy}}/g, data[i].BlockedBy);
+            var detail = data[i].Detail;
+            var stackTrack = '';
+            for(var j=0; j< detail.length; j++){
+                stackTrack += '<div class="th-stack-line"><i class="glyphicon glyphicon-minus"></i>  '+detail[j]['className']+'.'+detail[j]['methodName']+' ('+detail[j]['fileName']+' : '+detail[j]['lineNumber']+(detail[j]['nativeMethod']?' : native':'')+')</div>';
+            }
+            var temp = trTemplate.replace(/{{TID}}/g, data[i].TID).replace(/{{Name}}/g, data[i].Name)
+                                 .replace(/{{State}}/g, data[i].State).replace(/{{CPU}}/g, data[i].CPU.toFixed(2))
+                                 .replace(/{{TotalCPU}}/g, data[i].TotalCPU.toFixed(2))
+                                 .replace(/{{BlockedBy}}/g, data[i].BlockedBy)
+                                 .replace(/{{Detail}}/g, encodeURI(stackTrack));
             $("#thread-list").append(temp);
         }
     }
@@ -41,39 +50,28 @@ $(function() {
         }
         $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(response) {
             response = eval("(" + response + ")");
-            if("success"==response.status){
+            if ("success" == response.status) {
                 freshThreadList(response.data);
-            }else{
+            } else {
                 console.log(response.message);
             }
         });
         $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(response) {
             response = eval("(" + response + ")");
-            if("success"==response.status){
+            if ("success" == response.status) {
                 freshThreadCount(response.data);
-            }else{
+            } else {
                 console.log(response.message);
             }
         });
-    }, 1000);
+    }, 2000);
 
     $(".thread-list-count").change(function() {
         listCount = $(this).val();
     });
 
-    $("#thread-list").on('click','.btn-thread-view',function(){
-//        $('#thread-id').val($(this).attr('data-id'));
+    $("#thread-list").on('click', '.btn-thread-view', function() {
+        $('.thread-modal-body').html(decodeURI($(this).attr('data-info')));
     });
-
-    $('#threadModal').on('show.bs.modal', function () {
-        $.get(serverBasic + '/vm_thread_info/' +  $('#thread-id').val(), function(response) {
-            response = eval("(" + response + ")");
-            if("success"==response.status){
-                freshThreadCount(response.data);
-            }else{
-                console.log(response.message);
-            }
-        });
-    })
 
 });
