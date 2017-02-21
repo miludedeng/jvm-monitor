@@ -4,8 +4,10 @@ import cc.cafetime.type.MainClassApplicationType;
 import cc.cafetime.type.MainClassApplicationTypeFactory;
 import com.jvmtop.monitor.VMInfo;
 import com.jvmtop.monitor.VMInfoState;
+import com.jvmtop.openjdk.tools.ConnectionState;
 import com.jvmtop.openjdk.tools.LocalVirtualMachine;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -86,6 +88,11 @@ public class VmListInfo {
 
             if (!vmMap.containsKey(vmid)) {
                 VMInfo vmInfo = VMInfo.processNewVM(localvm, vmid);
+                if (ConnectionState.DISCONNECTED.equals(vmInfo.getState())
+                        && VMInfoState.CONNECTION_REFUSED.equals(vmInfo.getState())
+                        && VMInfoState.ERROR_DURING_ATTACH.equals(vmInfo.getState())) {
+                    continue;
+                }
                 vmInfoList.add(vmInfo);
                 vmInfoMap.put(vmid, vmInfo);
             }
