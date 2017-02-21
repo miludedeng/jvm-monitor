@@ -28,7 +28,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         String path = request.getRequestURI();
         if (!path.endsWith(AUTH_CODE_VERIFY) && !path.endsWith(AUTH_CODE) && !path.endsWith(LOGIN_PATH) && !path.endsWith(DO_LOGIN_PATH) && session.getAttribute("username") == null) {
-
             response.sendRedirect(servletPath + LOGIN_PATH);
         } else {
             return true;

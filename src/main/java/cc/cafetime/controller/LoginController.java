@@ -2,6 +2,7 @@ package cc.cafetime.controller;
 
 import cc.cafetime.App;
 import cc.cafetime.util.UserUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,9 @@ import java.util.Random;
  */
 @Controller
 public class LoginController {
+
+    @Value("${server.servlet-path}")
+    private String servletPath;
 
     @RequestMapping(value = "/do_login", method = RequestMethod.POST)
     @ResponseBody
@@ -61,7 +65,7 @@ public class LoginController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
-        return "redirect:/login";
+        return "redirect:" + servletPath + "/login";
     }
 
     @RequestMapping(value = "/authcode")

@@ -11,8 +11,8 @@ import java.net.URL;
 public class PageUtil {
 
     public static String readHtml(String name) throws IOException {
-        URL url = PageUtil.class.getResource("/templates/" + name + ".html");
-        BufferedReader reader = new BufferedReader(new FileReader(url.getFile()));
+        InputStream is = PageUtil.class.getResourceAsStream("/templates/" + name + ".html");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line = null;
         StringBuffer sb = new StringBuffer();
         while ((line = reader.readLine()) != null) {

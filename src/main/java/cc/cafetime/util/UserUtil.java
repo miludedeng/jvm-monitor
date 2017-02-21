@@ -1,5 +1,7 @@
 package cc.cafetime.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,12 @@ public class UserUtil {
     static {
         Properties prop = new Properties();
         try {
-            prop.load(UserUtil.class.getResourceAsStream("/user.properties"));
+            File file = new File("user.properties");
+            if(file.exists()){
+                prop.load(new FileInputStream(file));
+            }else {
+                prop.load(UserUtil.class.getResourceAsStream("/user.properties"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -19,7 +19,8 @@ public class PagesController {
         try {
             return PageUtil.readHtml("index");
         } catch (IOException e) {
-            return "redirct:/error";
+            e.printStackTrace();
+            return "/error";
         }
     }
 
@@ -29,7 +30,8 @@ public class PagesController {
         try {
             return PageUtil.readHtml("login");
         } catch (IOException e) {
-            return "redirct:/error";
+            e.printStackTrace();
+            return "/error";
         }
     }
 }
