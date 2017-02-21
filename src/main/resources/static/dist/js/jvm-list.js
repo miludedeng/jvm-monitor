@@ -4,8 +4,8 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 $(function() {
-    var serverBasic = 'http://'+location.host+'/';
-    var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="vm-title" href="javascript:;"><img src="../dist/app-icon/{{app_icon}}"> {{name}} (pid {{pid}})</a></li>';
+    var serverBasic = '';
+    var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="vm-title" href="javascript:;"><img src="dist/app-icon/{{app_icon}}"> {{name}} (pid {{pid}})</a></li>';
     var vmBasicInfoTemplate = '<div>\n\
                                 <strong>{{key}}</strong>\n\
                                 <label style="font-weight:400">{{value}}</label>\n\
@@ -40,7 +40,7 @@ $(function() {
     }
 
     var loadVmList = function() {
-        $.get(serverBasic + '/vm_list', function(response) {
+        $.get(serverBasic + 'vm_list', function(response) {
              response = eval("(" + response + ")");
              if("success"==response.status){
                 freshVmList(response.data);
@@ -67,7 +67,7 @@ $(function() {
     }
 
     var loadOsInfo = function() {
-        $.get(serverBasic + "/os_info", function(response) {
+        $.get(serverBasic + "os_info", function(response) {
             response = eval("(" + response + ")");
             if("success"==response.status){
                 freshOsInfo(response.data);
@@ -84,7 +84,7 @@ $(function() {
     $(".vm-list").on('click', '.vm-title', function() {
         var vmId = $(this).attr('data-vm-id');
         $("#vm-id").val(vmId);
-        var url = serverBasic + "/vm_basic_info/" + vmId;
+        var url = serverBasic + "vm_basic_info/" + vmId;
         $.get(url, function(response) {
             response = eval("(" + response + ")");
             if("success"==response.status){

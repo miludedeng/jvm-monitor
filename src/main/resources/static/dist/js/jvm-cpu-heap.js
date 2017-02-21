@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 $(function() {
-    var serverBasic = 'http://'+location.host+'/';
+    var serverBasic = '';
     var option1 = {
         tooltip: {
             formatter: "{a} <br/>{b} : {c}%"
@@ -86,17 +86,28 @@ $(function() {
         if (!heapUsage) {
             heapUsage = echarts.init(document.getElementById('heapPrecent'));
         }
-        $.get(serverBasic + '/vm_mon_info/' + $("#vm-id").val(), function(data) {
-            $.get(serverBasic + '/vm_mon_info/' + $("#vm-id").val(), function(response) {
-                response = eval("(" + response + ")");
-                if("success"==response.status){
-                     freshVmMonitor(response.data);
-                }else{
-                     console.log(response.message);
-                }
-            });
+        $.get(serverBasic + 'vm_mon_info/' + $("#vm-id").val(), function(response) {
+            response = eval("(" + response + ")");
+            if("success"==response.status){
+                freshVmMonitor(response.data);
+            }else{
+                console.log(response.message);
+            }
         });
 
     }, 1000);
+
+    $(".btn-dogc").click(function(){
+        $.get(serverBasic + 'vm_do_gc/' + $("#vm-id").val(), function(response) {
+            response = eval("(" + response + ")");
+            if("success"==response.status){
+                console.log(response.message);
+                alert("成功执行一次GC");
+            }else{
+                console.log("failed");
+                alert("GC失败");
+            }
+        });
+    });
 
 });

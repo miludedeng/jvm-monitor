@@ -60,7 +60,6 @@ public class VmThreadListInfo {
             long deltaThreadCpuTime = 0;
             if (previousThreadCPUMillis.containsKey(tid)) {
                 deltaThreadCpuTime = threadCpuTime - previousThreadCPUMillis.get(tid);
-
                 cpuTimeMap.put(tid, deltaThreadCpuTime);
             }
             newThreadCPUMillis.put(tid, threadCpuTime);
@@ -107,7 +106,7 @@ public class VmThreadListInfo {
     }
 
     private double getThreadCPUUtilization(long deltaThreadCpuTime, long totalTime) {
-        return getThreadCPUUtilization(deltaThreadCpuTime, totalTime, 1000 * 1000);
+        return getThreadCPUUtilization(deltaThreadCpuTime, totalTime, 1000 * 1000 * 2);
     }
 
     private double getThreadCPUUtilization(long deltaThreadCpuTime, long totalTime, double factor) {

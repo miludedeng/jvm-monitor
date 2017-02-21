@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 $(function() {
-    var serverBasic = 'http://' + location.host + '/';
+    var serverBasic = '';
 
     var trTemplate = '<tr class="odd gradeX">\n\
                             <td>{{TID}}</td>\n\
@@ -48,7 +48,7 @@ $(function() {
         if (!$("#thread-panel").is(':visible')) {
             return;
         }
-        $.get(serverBasic + '/vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(response) {
+        $.get(serverBasic + 'vm_thread_list/' + $("#vm-id").val() + "/" + listCount, function(response) {
             response = eval("(" + response + ")");
             if ("success" == response.status) {
                 freshThreadList(response.data);
@@ -56,7 +56,7 @@ $(function() {
                 console.log(response.message);
             }
         });
-        $.get(serverBasic + '/vm_thread_count/' + $("#vm-id").val(), function(response) {
+        $.get(serverBasic + 'vm_thread_count/' + $("#vm-id").val(), function(response) {
             response = eval("(" + response + ")");
             if ("success" == response.status) {
                 freshThreadCount(response.data);

@@ -2,11 +2,9 @@ package cc.cafetime.controller;
 
 import cc.cafetime.App;
 import cc.cafetime.entity.ResponseData;
-import cc.cafetime.info.VmBasicInfo;
-import cc.cafetime.info.VmMonitorInfo;
-import cc.cafetime.info.VmProfileListInfo;
-import cc.cafetime.info.VmThreadListInfo;
+import cc.cafetime.info.*;
 import com.jvmtop.monitor.JstatInfo;
+import com.jvmtop.monitor.VMInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -106,5 +104,15 @@ public class VmInfoController {
             data.setStatus(App.RESPONSE_STATUS_FAILED);
             return JSONObject.fromObject(data).toString();
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/vm_do_gc/{id}")
+    public String vmDoGC(@PathVariable("id") int id) {
+        ResponseData data = new ResponseData();
+        VMInfo vmInfo = VmListInfo.vmInfoMap.get(id);
+        vmInfo.getMemoryMXBean().gc();
+        data.setStatus(App.RESPONSE_STATUS_SUCCESS);
+        return JSONObject.fromObject(data).toString();
     }
 }
