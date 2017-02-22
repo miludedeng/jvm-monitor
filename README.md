@@ -29,7 +29,7 @@ http://[ip]:[port]/[prefix]/
 
 #### 软件截图
 
-![image](https://image.cafetime.cc/gallery/14a57955ab0a5fd0_2299.png)
+![image](https://github.com/miludedeng/jvm-monitor/blob/master/screenshot.png)
 
 
 
