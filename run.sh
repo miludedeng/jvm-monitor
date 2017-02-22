@@ -1,3 +1,4 @@
+#!/bin/bash
 DIR=$( cd $(dirname $0) ; pwd -P )
 
 if [ -z "$JAVA_HOME" ] ; then
