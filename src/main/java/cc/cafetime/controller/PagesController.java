@@ -13,6 +13,11 @@ import java.io.IOException;
 @Controller
 public class PagesController {
 
+    @RequestMapping("/")
+    public String index() {
+        return "redirect:/index";
+    }
+
     @ResponseBody
     @RequestMapping("/index")
     public String index() {

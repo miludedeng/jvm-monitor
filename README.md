@@ -29,7 +29,7 @@ http://[ip]:[port]/[prefix]/
 
 #### 软件截图
 
-![image](https://image.cafetime.cc/gallery/14a54b7401bf78a1_0d49.png)
+![image](https://image.cafetime.cc/gallery/14a57955ab0a5fd0_2299.png)
 
 
 
