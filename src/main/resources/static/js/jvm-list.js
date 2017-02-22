@@ -1,6 +1,6 @@
 $(function() {
     var serverBasic = '';
-    var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="vm-title" href="javascript:;"><img src="dist/app-icon/{{app_icon}}"> (pid {{pid}}) {{name}} </a></li>';
+    var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="{{active}} vm-title" href="javascript:;"><img src="dist/app-icon/{{app_icon}}"> (pid {{pid}}) {{name}} </a></li>';
     var vmBasicInfoTemplate = '<div>\n\
                                 <strong>{{key}}</strong>\n\
                                 <label style="font-weight:400">{{value}}</label>\n\
@@ -16,7 +16,8 @@ $(function() {
             var pid = data[i].VmID;
             var icon = data[i].Icon;
             var id = (name + pid).replace(/\./g, "");
-            var ele = vmListTemplate.replace(/{{name}}/g, name).replace(/{{pid}}/g, pid).replace(/{{id}}/g, id).replace(/{{app_icon}}/g, icon);
+			var selectID = $("#vm-id").val();
+            var ele = vmListTemplate.replace(/{{name}}/g, name).replace(/{{pid}}/g, pid).replace(/{{id}}/g, id).replace(/{{app_icon}}/g, icon).replace(/{{active}}/, selectID && selectID==id?'active':'');
             idArr.push(id);
             for (var j = 0; j < arr.length; j++) {
                 if (arr[j] === id) {
@@ -78,6 +79,10 @@ $(function() {
 
     $(".vm-list").on('click', '.vm-title', function() {
         var vmId = $(this).attr('data-vm-id');
+        $('.vm-list a').each(function(){
+            $(this).removeClass('active')
+         });
+		$(this).addClass("active");
         $("#vm-id").val(vmId);
         var url = serverBasic + "vm_basic_info/" + vmId;
         $.get(url, function(response) {
