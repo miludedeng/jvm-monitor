@@ -39,7 +39,7 @@ public class VmListInfo {
         } catch (Exception e) {
             throw new RuntimeException("update failed");
         }
-        Collections.sort(vmInfoList, VMInfo.CPU_LOAD_COMPARATOR);
+        Collections.sort(vmInfoList, VMInfo.VM_ID_COMPARATOR);
         List<Object> vmDataList = new ArrayList<Object>();
         for (VMInfo vmInfo : vmInfoList) {
             int vmId = vmInfo.getId();
@@ -72,8 +72,18 @@ public class VmListInfo {
     }
 
     private void updateVMs(List<VMInfo> vmList) throws Exception {
+        List<VMInfo> delList = new ArrayList<VMInfo>();
         for (VMInfo vmInfo : vmList) {
             vmInfo.update();
+            if (ConnectionState.DISCONNECTED.equals(vmInfo.getState())
+                    || VMInfoState.CONNECTION_REFUSED.equals(vmInfo.getState())
+                    || VMInfoState.ERROR_DURING_ATTACH.equals(vmInfo.getState())
+                    || VMInfoState.DETACHED.equals(vmInfo.getState())) {
+                delList.add(vmInfo);
+            }
+        }
+        for (VMInfo vmInfo : delList) {
+            vmList.remove(vmInfo);
         }
     }
 
@@ -97,7 +107,6 @@ public class VmListInfo {
             }
         }
         vmMap = machines;
-        System.out.println();
     }
 
     private String getEntryPointClass(String name) {
