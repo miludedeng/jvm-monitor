@@ -29,15 +29,8 @@ http://[ip]:[port]/[prefix]/
 
 #### 软件截图
 
-![image](https://image.cafetime.cc/gallery/14a54b62f254004b_258c.png)
-##### 概述界面
-
 ![image](https://image.cafetime.cc/gallery/14a54b7401bf78a1_0d49.png)
-##### 监视界面
 
-![image](https://image.cafetime.cc/gallery/14a54b7a416f128f_1d87.png)
-##### 线程监控界面
 
-![image](https://image.cafetime.cc/gallery/14a54b817ce34f2d_11cd.png)
-##### 线程堆栈信息
+
 
