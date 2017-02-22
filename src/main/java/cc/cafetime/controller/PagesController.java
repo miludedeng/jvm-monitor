@@ -14,7 +14,7 @@ import java.io.IOException;
 public class PagesController {
 
     @RequestMapping("/")
-    public String index() {
+    public String home() {
         return "redirect:/index";
     }
 

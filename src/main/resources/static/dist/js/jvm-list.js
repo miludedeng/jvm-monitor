@@ -5,7 +5,7 @@
  */
 $(function() {
     var serverBasic = '';
-    var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="vm-title" href="javascript:;"><img src="dist/app-icon/{{app_icon}}"> {{name}} (pid {{pid}})</a></li>';
+    var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="vm-title" href="javascript:;"><img src="dist/app-icon/{{app_icon}}"> (pid {{pid}}) {{name}} </a></li>';
     var vmBasicInfoTemplate = '<div>\n\
                                 <strong>{{key}}</strong>\n\
                                 <label style="font-weight:400">{{value}}</label>\n\

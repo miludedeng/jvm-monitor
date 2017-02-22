@@ -78,8 +78,7 @@ public class VmListInfo {
     }
 
     private void scanForNewVMs() {
-        Map<Integer, LocalVirtualMachine> machines = LocalVirtualMachine
-                .getNewVirtualMachines(vmMap);
+        Map<Integer, LocalVirtualMachine> machines = LocalVirtualMachine.getNewVirtualMachines(vmMap);
         Set<Map.Entry<Integer, LocalVirtualMachine>> set = machines.entrySet();
 
         for (Map.Entry<Integer, LocalVirtualMachine> entry : set) {
@@ -98,6 +97,7 @@ public class VmListInfo {
             }
         }
         vmMap = machines;
+        System.out.println();
     }
 
     private String getEntryPointClass(String name) {
