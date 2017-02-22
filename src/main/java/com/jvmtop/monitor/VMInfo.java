@@ -79,6 +79,14 @@ public class VMInfo {
         }
     }
 
+    private static final class VmIDComparator implements Comparator<VMInfo> {
+        @Override
+        public int compare(VMInfo o1, VMInfo o2) {
+            return o1.getId().compareTo(
+                    o2.getId());
+        }
+    }
+
     private ProxyClient proxyClient = null;
 
     //private VirtualMachine                                          vm                   = null;
@@ -119,6 +127,8 @@ public class VMInfo {
 
     public static final Comparator<VMInfo> CPU_LOAD_COMPARATOR = new CPULoadComparator();
 
+    public static final Comparator<VMInfo> VM_ID_COMPARATOR = new VmIDComparator();
+
     private long deltaUptime_;
 
     private long deltaCpuTime_;
@@ -143,9 +153,7 @@ public class VMInfo {
     private Map<String, String> systemProperties_;
 
     /**
-     * @param lastCPUProcessTime
      * @param proxyClient
-     * @param vm
      * @throws RuntimeException
      */
     public VMInfo(ProxyClient proxyClient, LocalVirtualMachine localVm,
@@ -160,11 +168,6 @@ public class VMInfo {
     }
 
     /**
-     * TODO: refactor to constructor?
-     * @param vmMap
-     * @param localvm
-     * @param vmid
-     * @param vmInfo
      * @return
      */
     public static VMInfo processNewVM(LocalVirtualMachine localvm, int vmid) {
@@ -511,8 +514,6 @@ public class VMInfo {
 
     /**
      * Extracts the jvmtop "short version" out of different properties
-     * TODO: should this be refactored?
-     * @param runtimeMXBean
      * @return
      */
     private String extractShortVer() {
