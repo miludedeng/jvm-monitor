@@ -2,6 +2,8 @@ package cc.cafetime;
 
 import cc.cafetime.entity.SqlData;
 import cc.cafetime.info.VmJdbcInfo;
+import cc.cafetime.info.VmListInfo;
+import cc.cafetime.util.NetUtil;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -10,18 +12,30 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Queue;
 
 /**
  * Created by liujing on 2017/3/6.
  */
 public class BroadcastReceive {
+    private static int PORT = 34876;
+    private static boolean lock = false;
 
-    private static final String SQL_DATA_SPERA = "__JVM_MONITOR__";
 
     public static void exec() {
+        if (lock) {
+            throw new RuntimeException("do not run broad cast more than once");
+        }
+        lock = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
+                while (NetUtil.isLoclePortUsing(PORT)) {
+                    PORT = PORT + 1;
+                    if (PORT > 65536) {
+                        throw new RuntimeException("no port can be used!");
+                    }
+                }
                 DatagramPacket receive = new DatagramPacket(new byte[1024], 1024);
                 DatagramSocket server = null;
                 try {
@@ -30,9 +44,7 @@ public class BroadcastReceive {
                     e.printStackTrace();
                 }
 
-                System.out.println("---------------------------------");
-                System.out.println("Board Cast start......");
-                System.out.println("---------------------------------");
+                System.out.println("BoardCast Listener start......");
 
                 while (true) {
                     try {
@@ -46,19 +58,14 @@ public class BroadcastReceive {
                     if (StringUtils.isEmpty(recvData)) {
                         continue;
                     }
-                    String[] datas = recvData.split(SQL_DATA_SPERA);
-                    if (datas.length < 3) {
-                        continue;
-                    }
-                    SqlData sqlData = new SqlData();
-                    sqlData.setCost(Long.parseLong(datas[0]));
-                    sqlData.setSql(datas[1]);
-                    Date date = new Date();
-                    date.setTime(Long.parseLong(datas[2]));
-                    sqlData.setDate(date);
-                    VmJdbcInfo.sqlDataQueue.offer(sqlData);
+                    VmJdbcInfo.saveSqlData(recvData);
                 }
             }
         }).start();
+    }
+
+
+    public static int getPORT() {
+        return PORT;
     }
 }
