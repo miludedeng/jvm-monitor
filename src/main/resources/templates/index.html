@@ -101,352 +101,412 @@
     .thread-table th:after {
         display: none;
     }
-    .begin-panel{
+    
+    .begin-panel {
         text-align: center;
         padding-top: 40px;
         font-size: 18px;
         color: #337ab7;
     }
+    
     .thread-modal-body {
         overflow-y: scroll;
-        margin:20px;
+        margin: 20px;
     }
+    
     .th-stack-line {
         white-space: nowrap;
         margin-bottom: 8px;
     }
+    
     .navbar-logo img {
         height: 20px;
-    };
-    @media (min-width: 768px)
-    .modal-dialog {
+    }
+    
+    ;
+    @media (min-width: 768px) .modal-dialog {
         width: 800px;
+    }
+    .sql-filter-input {
+        width: 20% !important;
     }
     </style>
 </head>
 
 <body>
-<input type="hidden" id="vm-id">
-<div id="wrapper">
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand navbar-logo" href="index" style="padding-right:0px"><img alt="JMonitor" src="dist/images/logo.svg"></a>
-            <a class="navbar-brand navbar-title" href="index" style="padding-left:5px">JMonitor</a>
-        </div>
-        <ul class="nav navbar-top-links navbar-right">
-            <li>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+    <input type="hidden" id="vm-id">
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand navbar-logo" href="index" style="padding-right:0px"><img alt="JMonitor" src="dist/images/logo.svg"></a>
+                <a class="navbar-brand navbar-title" href="index" style="padding-left:5px">JMonitor</a>
+            </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                     ( <span id="OsVersion"></span> <span id="OsArch"></span>, <span id="ProcesserNum"></span> cpus, load
                     avg <span id="LoadAvg"></span> )
                 </a>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav navbar-collapse">
-                <ul class="nav vm-list" id="side-list">
-                </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav vm-list" id="side-list">
+                    </ul>
+                </div>
             </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper-begin" class="page-wrapper">
+            <div class="begin-panel"><i class="glyphicon glyphicon-hand-left"></i> 请点击左侧应用 </div>
         </div>
-        <!-- /.navbar-static-side -->
-    </nav>
-    <div id="page-wrapper-begin" class="page-wrapper">
-        <div class="begin-panel"><i class="glyphicon glyphicon-hand-left"></i>  请点击左侧应用 </div>
-    </div>
-    <div id="page-wrapper" class="page-wrapper sr-only">
-        <div class="row">
-            <div class="col-lg-12 header-tabs">
-                <h5 class="page-header active"><a data-id="basic-panel" href="javascript:;">概述</a></h5>&nbsp;|&nbsp;
-                <h5 class="page-header"><a data-id="mon-panel" href="javascript:;">监视</a></h5>&nbsp;|&nbsp;
-                <h5 class="page-header"><a data-id="thread-panel" href="javascript:;">线程</a></h5>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <div id="basic-panel" class="row page-panel panel-active">
-            <div class="col-lg-12">
-                <div class="panel panel-default active">
-                    <div class="panel-heading">
-                        <i class="fa fa-th-list"></i> 基本信息
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body basic-info" style="height:145px">
-                    </div>
-                    <!-- /.panel-body -->
+        <div id="page-wrapper" class="page-wrapper sr-only">
+            <div class="row">
+                <div class="col-lg-12 header-tabs">
+                    <h5 class="page-header active"><a data-id="basic-panel" href="javascript:;">概述</a></h5>&nbsp;|&nbsp;
+                    <h5 class="page-header"><a data-id="mon-panel" href="javascript:;">监视</a></h5>&nbsp;|&nbsp;
+                    <h5 class="page-header"><a data-id="thread-panel" href="javascript:;">线程</a></h5>&nbsp;|&nbsp;
+                    <h5 class="page-header"><a data-id="sql-panel" href="javascript:;">SQL</a></h5>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#args" data-toggle="tab">Args</a></li>
-                            <li><a href="#vmargs" data-toggle="tab">Jvm 参数</a></li>
-                            <li><a href="#sysprops" data-toggle="tab">系统属性</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body tab-content">
-                        <div class="tab-pane fade active in" id="args" style="height: 300px;overflow: scroll;">
-                        </div>
-                        <div class="tab-pane fade in" id="vmargs" style="height: 300px;overflow: scroll;">
-                        </div>
-                        <div class="tab-pane fade in" id="sysprops" style="height: 300px;overflow: scroll;">
-                        </div>
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-                <!-- /.panel -->
+                <!-- /.col-lg-12 -->
             </div>
-        </div>
-        <!-- /.row -->
-        <div id="mon-panel" class="row page-panel">
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-th-list"></i> Cpu使用率
+            <div id="basic-panel" class="row page-panel panel-active">
+                <div class="col-lg-12">
+                    <div class="panel panel-default active">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> 基本信息
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body basic-info" style="height:145px">
+                        </div>
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel-heading -->
-                    <div id="cpuPrecent" class="panel-body" style="height:300px;">
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-th-list"></i> 堆内存使用
-                        <div class="pull-right heap-wrapper">
-                            <div class="btn-group">
-                                Heap: <span id="heap-used"></span>/<span id="heap-max"></span>&nbsp;&nbsp; NonHeap:
-                                <span id="non-heap-used">212m</span>/<span id="non-heap-max">725m</span>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#args" data-toggle="tab">Args</a></li>
+                                <li><a href="#vmargs" data-toggle="tab">Jvm 参数</a></li>
+                                <li><a href="#sysprops" data-toggle="tab">系统属性</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body tab-content">
+                            <div class="tab-pane fade active in" id="args" style="height: 300px;overflow: scroll;">
+                            </div>
+                            <div class="tab-pane fade in" id="vmargs" style="height: 300px;overflow: scroll;">
+                            </div>
+                            <div class="tab-pane fade in" id="sysprops" style="height: 300px;overflow: scroll;">
                             </div>
                         </div>
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel-heading -->
-                    <div id="heapPrecent" class="panel-body" style="height:300px;">
-                    </div>
-                    <!-- /.panel-body -->
+                    <!-- /.panel -->
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-th-list"></i> 监视
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                运行时间:<span id="up-time">10:12m</span>
-                            </div>
+            <!-- /.row -->
+            <div id="mon-panel" class="row page-panel">
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> Cpu使用率
                         </div>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover" style="margin-bottom: 0">
-                                <tbody>
-                                <tr>
-                                    <td>实时线程数:</td>
-                                    <td id="thr-count"></td>
-                                </tr>
-                                <tr>
-                                    <td>最大线程数:</td>
-                                    <td id="thr-max-count"></td>
-                                </tr>
-                                <tr>
-                                    <td>共创建线程数:</td>
-                                    <td id="total-thr-count"></td>
-                                </tr>
-                                <tr>
-                                    <td>Class Loaded:</td>
-                                    <td id="class-loaded"></td>
-                                </tr>
-                                <tr>
-                                    <td>GC Time:</td>
-                                    <td id="gc-time"></td>
-                                </tr>
-                                <tr>
-                                    <td>GC 执行次数:</td>
-                                    <td id="gc-runs"></td>
-                                </tr>
-                                <tr>
-                                    <td>Old Space:</td>
-                                    <td id="old-mem"></td>
-                                </tr>
-                                <tr>
-                                    <td>Eden Space:</td>
-                                    <td id="eden-mem"></td>
-                                </tr>
-                                <tr>
-                                    <td>Survival from</td>
-                                    <td id="sur1-mem"></td>
-                                </tr>
-                                <tr>
-                                    <td>Survival to</td>
-                                    <td id="sur2-mem"></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <!-- /.panel-heading -->
+                        <div id="cpuPrecent" class="panel-body" style="height:300px;">
                         </div>
-                        <!-- /.table-responsive -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-th-list"></i> 实时堆内存
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-xs btn-dogc">
-                                    &nbsp;Do GC&nbsp;
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body" style="height:401px">
-                        <div class="col-md-8">
-                            <fieldset class="sp-fs">
-                                <legend>Old</legend>
-                                <div id="old-top" style="height:347px;background-color: #eee;"></div>
-                                <div id="old-foot" style="height:0px;background-color: #687d15;"></div>
-                            </fieldset>
-                        </div>
-                        <div class="col-md-4">
-                            <div>
-                                <fieldset class="sp-fs">
-                                    <legend>Eden</legend>
-                                    <div id="eden-top" style="height:205px;background-color: #eee;"></div>
-                                    <div id="eden-foot" style="height:0px;background-color: #f3b220;"></div>
-                                </fieldset>
-                            </div>
-                            <div>
-                                <fieldset class="sp-fs">
-                                    <legend>Sur from</legend>
-                                    <div id="from-top" style="height:48px;background-color: #eee;"></div>
-                                    <div id="from-foot" style="height:0px;background-color: #d66312;"></div>
-                                </fieldset>
-                            </div>
-                            <div>
-                                <fieldset class="sp-fs">
-                                    <legend>Sur to</legend>
-                                    <div id="to-top" style="height:48px;background-color: #eee;"></div>
-                                    <div id="to-foot" style="height:0px;background-color: #d66312;"></div>
-                                </fieldset>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.panel-body -->
-                </div>
-            </div>
-        </div>
-        <div id="thread-panel" class="row page-panel">
-            <div class="col-lg-12">
-                <div class="panel panel-default active">
-                    <div class="panel-heading">
-                        <i class="fa fa-th-list"></i> 线程
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div id="thread-table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="dataTables_length" id="thread-table_length">
-                                        <label>显示条数：
-                                            <select class="form-control input-sm thread-list-count">
-                                                <option value="10">10</option>
-                                                <option selected value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="dataTables_length pull-right" id="thread-table_length">
-                                        <label>线程数：
-                                            <span id="thread-count"></span>
-                                        </label>
-                                    </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> 堆内存使用
+                            <div class="pull-right heap-wrapper">
+                                <div class="btn-group">
+                                    Heap: <span id="heap-used"></span>/<span id="heap-max"></span>&nbsp;&nbsp; NonHeap:
+                                    <span id="non-heap-used">212m</span>/<span id="non-heap-max">725m</span>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table width="100%"
-                                           class="table table-striped table-bordered table-hover thread-table dataTable no-footer dtr-inline"
-                                           id="thread-table" style="width: 100%;">
-                                        <thead>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div id="heapPrecent" class="panel-body" style="height:300px;">
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> 监视
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    运行时间:<span id="up-time">10:12m</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" style="margin-bottom: 0">
+                                    <tbody>
                                         <tr>
-                                            <th width="10%">Thread ID</th>
-                                            <th width="40%">Name</th>
-                                            <th width="20%">State</th>
-                                            <th width="10%">CPU</th>
-                                            <th width="10%">Total CPU</th>
-                                            <th width="10%">Blocked By</th>
-                                            <th width="10%"></th>
+                                            <td>实时线程数:</td>
+                                            <td id="thr-count"></td>
                                         </tr>
-                                        </thead>
-                                        <tbody id="thread-list">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
+                                        <tr>
+                                            <td>最大线程数:</td>
+                                            <td id="thr-max-count"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>共创建线程数:</td>
+                                            <td id="total-thr-count"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Class Loaded:</td>
+                                            <td id="class-loaded"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>GC Time:</td>
+                                            <td id="gc-time"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>GC 执行次数:</td>
+                                            <td id="gc-runs"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Old Space:</td>
+                                            <td id="old-mem"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Eden Space:</td>
+                                            <td id="eden-mem"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Survival from</td>
+                                            <td id="sur1-mem"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Survival to</td>
+                                            <td id="sur2-mem"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <!-- /.panel-body -->
+                            <!-- /.table-responsive -->
                         </div>
-                        <!-- /.panel -->
+                        <!-- /.panel-body -->
                     </div>
                 </div>
-                <!-- /.row -->
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> 实时堆内存
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs btn-dogc">
+                                        &nbsp;Do GC&nbsp;
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" style="height:401px">
+                            <div class="col-md-8">
+                                <fieldset class="sp-fs">
+                                    <legend>Old</legend>
+                                    <div id="old-top" style="height:347px;background-color: #eee;"></div>
+                                    <div id="old-foot" style="height:0px;background-color: #687d15;"></div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <fieldset class="sp-fs">
+                                        <legend>Eden</legend>
+                                        <div id="eden-top" style="height:205px;background-color: #eee;"></div>
+                                        <div id="eden-foot" style="height:0px;background-color: #f3b220;"></div>
+                                    </fieldset>
+                                </div>
+                                <div>
+                                    <fieldset class="sp-fs">
+                                        <legend>Sur from</legend>
+                                        <div id="from-top" style="height:48px;background-color: #eee;"></div>
+                                        <div id="from-foot" style="height:0px;background-color: #d66312;"></div>
+                                    </fieldset>
+                                </div>
+                                <div>
+                                    <fieldset class="sp-fs">
+                                        <legend>Sur to</legend>
+                                        <div id="to-top" style="height:48px;background-color: #eee;"></div>
+                                        <div id="to-foot" style="height:0px;background-color: #d66312;"></div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
             </div>
-            <!-- /#page-wrapper -->
+            <div id="thread-panel" class="row page-panel">
+                <div class="col-lg-12">
+                    <div class="panel panel-default active">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> 线程
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="sql-table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_length" id="thread-table_length">
+                                            <label>显示条数：
+                                                <select class="form-control input-sm thread-list-count">
+                                                    <option value="10">10</option>
+                                                    <option selected value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_length pull-right" id="thread-table_length">
+                                            <label>线程数：
+                                                <span id="thread-count"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table width="100%" class="table table-striped table-bordered table-hover thread-table dataTable no-footer dtr-inline" id="thread-table" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th width="10%">Thread ID</th>
+                                                    <th width="40%">Name</th>
+                                                    <th width="20%">State</th>
+                                                    <th width="10%">CPU</th>
+                                                    <th width="10%">Total CPU</th>
+                                                    <th width="10%">Blocked By</th>
+                                                    <th width="10%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="thread-list">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /#page-wrapper -->
+            </div>
+            <div id="sql-panel" class="row page-panel">
+                <div class="col-lg-12">
+                    <div class="panel panel-default active">
+                        <div class="panel-heading">
+                            <i class="fa fa-th-list"></i> SQL
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="sql_table_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_length" id="thread-table_length">
+                                             <label>过滤：
+                                                <input type='text' placeholder="最小毫秒值" class='form-control sql-filter-input' />-
+                                                <input type='text' placeholder="最大毫秒值" class='form-control sql-filter-input' />
+                                                <button class="btn btn-default btn-sm btn-filter">确认</button>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_length pull-right" id="thread-table_length">
+                                            <button class="btn btn-default btn-sm btn-load-sql-agent">载入agent</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table width="100%" class="table table-striped table-bordered table-hover thread-table dataTable no-footer dtr-inline" id="thread-table" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th width="10%">耗时</th>
+                                                    <th width="70%">SQL</th>
+                                                    <th width="10%">执行时间</th>
+                                                    <th width="10%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="sql-list">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /#page-wrapper -->
+            </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="threadModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
-    <input type="hidden" id="thread-id"/>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="thread-modal-title">
+    <div class="modal fade" id="threadModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
+        <input type="hidden" id="thread-id" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="thread-modal-title">
                     Stack Track
                 </h4>
+                </div>
+                <div class="thread-modal-body">
+                </div>
             </div>
-            <div class="thread-modal-body">
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-<!-- /#wrapper -->
-<!-- jQuery -->
-<script src="vendor/jquery/jquery.min.js"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!-- Metis Menu Plugin JavaScript -->
-<script src="vendor/metisMenu/metisMenu.min.js"></script>
-<script src="dist/js/echarts.min.js"></script>
-<!-- Custom Theme JavaScript -->
-<script src="dist/js/sb-admin-2.js"></script>
-<script src="dist/js/jvm-list.js"></script>
-<script src="dist/js/jvm-cpu-heap.js"></script>
-<script src="dist/js/jvm-thread-list.js"></script>
-<script src="dist/js/jvm-profile-list.js"></script>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="dist/js/echarts.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+    <script src="dist/js/jvm-list.js"></script>
+    <script src="dist/js/jvm-cpu-heap.js"></script>
+    <script src="dist/js/jvm-thread-list.js"></script>
+    <script src="dist/js/jvm-profile-list.js"></script>
+    <script src="dist/js/sql-list.js"></script>
 </body>
 
 </html>

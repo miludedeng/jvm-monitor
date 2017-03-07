@@ -14,7 +14,6 @@ public class VmJdbcInfo {
 
     private static final String SQL_DATA_SPERA = "__JVM_MONITOR__";
     public final static String SQL_STAT_AGENT_LOADED = "cc.cafetime.sqlstat.loaded";
-    private static Map<Integer, String> tokenMap = new HashMap<Integer, String>();
     public static Map<String, Queue<SqlData>> sqlDataQueueMap = new HashMap<String, Queue<SqlData>>();
     public static int QUEUE_LENGTH = 20000;
 
@@ -22,18 +21,15 @@ public class VmJdbcInfo {
      * 加载jar报到指定的应用
      *
      * @param vmId
-     * @param listenAddr
      * @throws Exception
      */
-    public static void addAgent(int vmId, String listenAddr) throws Exception {
+    public static void addAgent(int vmId) throws Exception {
         VirtualMachine vm = VirtualMachine.attach(String.valueOf(vmId));
         Properties prop = vm.getSystemProperties();
-        boolean isLoaded = (Boolean) prop.get(SQL_STAT_AGENT_LOADED);
-        if (isLoaded) {
+        if (prop.get(SQL_STAT_AGENT_LOADED) != null && (Boolean) prop.get(SQL_STAT_AGENT_LOADED)) {
             throw new RuntimeException("Don't loaded agent more than once!");
         }
-        String token = UUID.randomUUID().toString();
-        vm.loadAgent("sqlstat.jar", listenAddr + "," + token);
+        vm.loadAgent("sqlstat.jar");
     }
 
     /**
