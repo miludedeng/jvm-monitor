@@ -26,10 +26,10 @@ public class VmJdbcInfo {
     public static void addAgent(int vmId) throws Exception {
         VirtualMachine vm = VirtualMachine.attach(String.valueOf(vmId));
         Properties prop = vm.getSystemProperties();
-        if (prop.get(SQL_STAT_AGENT_LOADED) != null && (Boolean) prop.get(SQL_STAT_AGENT_LOADED)) {
+        if (prop.get(SQL_STAT_AGENT_LOADED) != null && Boolean.parseBoolean((String) prop.get(SQL_STAT_AGENT_LOADED))) {
             throw new RuntimeException("Don't loaded agent more than once!");
         }
-        vm.loadAgent("sqlstat.jar");
+        vm.loadAgent(VmJdbcInfo.class.getResource("/sqlstat.jar").getFile());
     }
 
     /**
