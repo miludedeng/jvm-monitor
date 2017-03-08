@@ -3,8 +3,10 @@ package cc.cafetime.info;
 import cc.cafetime.LimitQueue;
 import cc.cafetime.entity.SqlData;
 import com.jvmtop.monitor.VMInfo;
+import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -57,5 +59,15 @@ public class VmJdbcInfo {
         q.offer(sqlData);
         System.out.println("VmID: " + vmId + " Time: " + sqlData.getCost() + " SQL: " + sqlData.getSql());
         VmJdbcInfo.sqlDataQueueMap.put(vmId, q);
+    }
+
+    public static boolean isAddedAgent(int vmId) throws IOException, AttachNotSupportedException {
+        VirtualMachine vm = VirtualMachine.attach(String.valueOf(vmId));
+        Properties prop = vm.getSystemProperties();
+        if (prop.get(SQL_STAT_AGENT_LOADED) != null && Boolean.parseBoolean((String) prop.get(SQL_STAT_AGENT_LOADED))) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }

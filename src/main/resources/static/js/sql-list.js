@@ -20,5 +20,14 @@ $(function() {
             }
         });
     });
-
+    $('a[data-id="sql-panel"]').click(function(){
+        $.get(serverBasic + 'sql_stat/is_load_agent/' + $("#vm-id").val(), function(response) {
+            response = eval("(" + response + ")");
+            if ("success" == response.status) {
+                alert("loaded");
+            }else{
+                alert("not loaded");
+            }
+        });
+    });
 });
