@@ -66,8 +66,26 @@ public class VmJdbcInfo {
         Properties prop = vm.getSystemProperties();
         if (prop.get(SQL_STAT_AGENT_LOADED) != null && Boolean.parseBoolean((String) prop.get(SQL_STAT_AGENT_LOADED))) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    public static List<SqlData> loadSqlList(int vmId, int pageSize, int pageCount) {
+        List<SqlData> list = new ArrayList<SqlData>();
+        Queue queue = sqlDataQueueMap.get(vmId+"");
+        if(queue.size()<=0){
+            return list;
+        }
+        int i = 0;
+        for (Object obj : queue) {
+            SqlData sqlData = (SqlData) obj;
+            list.add(sqlData);
+            i++;
+            if (i >= 25) {
+                break;
+            }
+        }
+        return list;
     }
 }

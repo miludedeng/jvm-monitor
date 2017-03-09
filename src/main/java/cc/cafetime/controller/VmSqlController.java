@@ -39,7 +39,22 @@ public class VmSqlController {
     public String isLoadAgent(@PathVariable("id") int id) {
         ResponseData data = new ResponseData();
         try {
-            VmJdbcInfo.isAddedAgent(id);
+            data.setMessage(String.valueOf(VmJdbcInfo.isAddedAgent(id)));
+            data.setStatus(App.RESPONSE_STATUS_SUCCESS);
+            return JSONObject.fromObject(data).toString();
+        } catch (Exception e) {
+            data.setStatus(App.RESPONSE_STATUS_FAILED);
+            data.setMessage(e.getMessage());
+            return JSONObject.fromObject(data).toString();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/sql_stat/load_sql_list/{id}/{pgSize}/{pgCount}")
+    public String loadSqlList(@PathVariable("id") int id, @PathVariable("pgSize") int pageSize, @PathVariable("pgCount") int pageCount) {
+        ResponseData data = new ResponseData();
+        try {
+            data.setData(VmJdbcInfo.loadSqlList(id, pageSize, pageCount));
             data.setStatus(App.RESPONSE_STATUS_SUCCESS);
             return JSONObject.fromObject(data).toString();
         } catch (Exception e) {
