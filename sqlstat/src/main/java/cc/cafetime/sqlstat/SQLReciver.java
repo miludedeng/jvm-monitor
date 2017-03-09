@@ -11,6 +11,11 @@ public class SQLReciver {
 
     private static final String SQL_DATA_SPERA = "__JVM_MONITOR__";
 
+    /**
+     * 接收从注入的代码中传出的参数，并传给广播方法发送给监控端
+     * @param start
+     * @param args
+     */
     public static void recive(long start, Object[] args) {
         String sql = null;
         if (args[0] instanceof PreparedStatement) {

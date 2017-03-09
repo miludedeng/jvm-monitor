@@ -8,11 +8,13 @@ import java.net.*;
  */
 public class BroadCastSender {
 
+    /**
+     * 将接收到的信息通过广播报文的方式发送给监控端
+     * @param msg
+     * @throws IOException
+     */
     public void sender(String msg) throws IOException {
         byte[] bytes = msg.getBytes();
-        /*
-         * 在Java UDP中单播与广播的代码是相同的,要实现具有广播功能的程序只需要使用广播地址即可, 例如：这里使用了本地的广播地址
-         */
         InetAddress inetAddr = InetAddress.getByName("255.255.255.255");
         DatagramSocket client = new DatagramSocket();
 

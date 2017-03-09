@@ -5,10 +5,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.IOException;
-import java.lang.instrument.ClassDefinition;
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.lang.instrument.Instrumentation;
+import java.lang.instrument.*;
 import java.lang.management.ManagementFactory;
 import java.security.ProtectionDomain;
 
@@ -26,25 +23,12 @@ public class Main {
         pid = name.split("@")[0];
     }
 
-    public static void agentmain(String s, Instrumentation inst) throws Exception {
-        synchronized (Main.class) {
-            if (firstTime) {
-                firstTime = false;
-                System.setProperty(SQL_STAT_AGENT_LOADED, Boolean.TRUE.toString());
-            } else {
-                throw new Exception("Main : attempting to load SqlStat agent more than once");
-            }
-        }
-        Class<?>[] allLoadedClasses = inst.getAllLoadedClasses();
-        for (int i = 0; i < allLoadedClasses.length; i++) {
-            String className = allLoadedClasses[i].getName();
-            if (0 != className.length() && "com.mysql.jdbc.ConnectionImpl".equals(className)) {
-                inst.addTransformer(new JDBCTransformer(), true);
-                inst.retransformClasses(allLoadedClasses[i]);
-            }
-        }
-    }
-
+    /**
+     * 使用-javaagent参数调用入口
+     * @param s
+     * @param inst
+     * @throws Exception
+     */
     public static void premain(String s, Instrumentation inst) throws Exception {
         synchronized (Main.class) {
             if (firstTime) {
@@ -54,9 +38,45 @@ public class Main {
                 throw new Exception("Main : attempting to load SqlStat agent more than once");
             }
         }
-        inst.addTransformer(new JDBCTransformer());
+        doTransform(inst);
     }
 
+    /**
+     * 使用VirtualMachine loadAgent方法调用入口
+     * jar包中的manifest文件中需要开启
+     * <Can-Redefine-Classes>true</Can-Redefine-Classes>
+     * <Can-Retransform-Classes>true</Can-Retransform-Classes>
+     * @param s
+     * @param inst
+     * @throws Exception
+     */
+    public static void agentmain(String s, Instrumentation inst) throws Exception {
+        premain(s, inst);
+    }
+
+    public static void doTransform(Instrumentation inst) throws UnmodifiableClassException {
+        Class<?>[] allLoadedClasses = inst.getAllLoadedClasses();
+        boolean isLoaded = false;
+        Class clazz = null;
+        for (int i = 0; i < allLoadedClasses.length; i++) {
+            String className = allLoadedClasses[i].getName();
+            if (0 != className.length() && "com.mysql.jdbc.ConnectionImpl".equals(className)) {
+                isLoaded = true;
+                clazz = allLoadedClasses[i];
+            }
+        }
+        if (isLoaded) {
+            inst.addTransformer(new JDBCTransformer(), true);
+            inst.retransformClasses(clazz);
+        } else {
+            inst.addTransformer(new JDBCTransformer());
+        }
+    }
+
+
+    /**
+     * 在 ConntectionImpl 中注入监听代码
+     */
     static class JDBCTransformer implements ClassFileTransformer {
         public byte[] transform(ClassLoader loader, final String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
             if (className != null && className.equals("com/mysql/jdbc/ConnectionImpl")) {
