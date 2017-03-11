@@ -1,8 +1,3 @@
-/*!
- * Start Bootstrap - SB Admin 2 v3.3.7+1 (http://startbootstrap.com/template-overviews/sb-admin-2)
- * Copyright 2013-2017 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
- */
 $(function() {
     var serverBasic = '';
     var vmListTemplate = '<li id={{id}} title="{{name}} (pid {{pid}})"><a data-vm-id="{{pid}}" class="{{active}} vm-title" href="javascript:;"><img src="dist/app-icon/{{app_icon}}"> (pid {{pid}}) {{name}} </a></li>';

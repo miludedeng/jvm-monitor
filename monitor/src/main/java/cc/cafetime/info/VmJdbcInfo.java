@@ -58,7 +58,6 @@ public class VmJdbcInfo {
             q = new LimitQueue<SqlData>(VmJdbcInfo.QUEUE_LENGTH);
         }
         q.offer(sqlData);
-        System.out.println("VmID: " + vmId + " Time: " + sqlData.getCost() + " SQL: " + sqlData.getSql());
         VmJdbcInfo.sqlDataQueueMap.put(vmId, q);
     }
 
