@@ -7,7 +7,7 @@ $(function() {
     var serverBasic = '';
     var trTemplate = '<tr class="odd gradeX">\n\
                             <td>{{Cost}}</td>\n\
-                            <td>{{Sql}}</td>\n\
+                            <td class="sql-text">{{Sql}}</td>\n\
                             <td>{{Date}}</td>\n\
                             <td><input type="button" value="view" class="btn btn-default btn-sm btn-sql-view"  data-toggle="modal" data-target="#sqlModal" data-info="{{Detail}}"></td>\n\
                         </tr>';
@@ -18,6 +18,7 @@ $(function() {
             if ("success" == response.status) {
                 console.log(response.message);
                 alert("成功载入sql agent");
+                dealBtnAndLoadList("success","true");
             } else {
                 console.log(response.message);
                 alert("载入失败");
@@ -33,6 +34,7 @@ $(function() {
 
     $(".vm-list").on('click', '.vm-title', function() {
         var vmId = $(this).attr('data-vm-id');
+        $("#sql-list").html('');
         $.get(serverBasic + 'sql_stat/is_load_agent/' + vmId, function(response) {
             response = eval("(" + response + ")");
             dealBtnAndLoadList(response.status, response.message);
@@ -40,7 +42,11 @@ $(function() {
     });
 
     $(".btn-load-sql-list").click(function(){
-        loadSqlList();
+        loadSqlList(1,10,true);
+    });
+
+    $(".btn-filter-submit").click(function(){
+        loadSqlList(1,10,false);
     });
 
     var dealBtnAndLoadList = function(status, message) {
@@ -65,10 +71,34 @@ $(function() {
         }
     }
 
-    var loadSqlList = function() {
-        $.get(serverBasic + 'sql_stat/load_sql_list/' + $("#vm-id").val() + '/10/0', function(response) {
+    var loadSqlList = function(index,size,refresh) {
+        if (!$("#sql-panel").is(':visible')) {
+            return false;
+        }
+        if(!index){
+            index = 1;
+        }
+        if(!size){
+            size = 10;
+        }
+        var url = serverBasic + 'sql_stat/load_sql_list/' + $("#vm-id").val() + '/'+size+'/'+index+'/';
+        if(refresh){
+            url += '1';
+        }else{
+            url += '0';
+        }
+        var min = $('.sql-filter-min').val();
+        var max = $('.sql-filter-max').val();
+        if(!min) min = 0;
+        if(!max) max = 0;
+        var params = {min: min,max: max};
+        $.get(url, params, function(response) {
             response = eval("(" + response + ")");
-            var data = response.data;
+            if(response.status=='failed'){
+                return false;
+            }
+            var data = response.data.List;
+            var total = response.data.Total;
             $("#sql-list").html('');
             for (var i = 0; i < data.length; i++) {
                 var cost = data[i].cost;
@@ -77,8 +107,18 @@ $(function() {
                 var temp = trTemplate.replace(/{{Cost}}/g, cost + "ms").replace(/{{Sql}}/g, sql).replace(/{{Date}}/g, date);
                 $("#sql-list").append(temp);
             }
+            $('.sql-page-bar').pageBar(total,index,size);
         });
     }
+
+    $('.sql-page-bar').on('click','.go-page',function(){
+        var pageIndex = new Number($(this).attr('data-index'));
+        loadSqlList(pageIndex);
+    });
+
+    $("#sql-list").on('click', '.btn-sql-view', function() {
+        $('.sql-modal-body').html($(this).parent().parent().find(".sql-text").text());
+    });
 
     Date.prototype.format = function(fmt) { //author: meizz 
         var o = {

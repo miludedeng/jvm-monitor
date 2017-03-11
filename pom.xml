@@ -6,18 +6,52 @@
 
     <groupId>cc.cafetime</groupId>
     <artifactId>jmonitor</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>0.9.0-SNAPSHOT</version>
     <modules>
         <module>monitor</module>
         <module>sqlstat</module>
     </modules>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.1.RELEASE</version>
+    </parent>
+
+    <properties>
+        <!-- change it to point to your tools.jar from your JDK -->
+        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+        <jdk.version>1.6</jdk.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-all</artifactId>
             <version>5.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jopt-simple</groupId>
+            <artifactId>jopt-simple</artifactId>
+            <version>4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>${jdk.version}</version>
+            <scope>system</scope>
+            <systemPath>${toolsjar}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
         </dependency>
     </dependencies>
 </project>

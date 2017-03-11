@@ -17,6 +17,7 @@ public class VmJdbcInfo {
     private static final String SQL_DATA_SPERA = "__JVM_MONITOR__";
     public final static String SQL_STAT_AGENT_LOADED = "cc.cafetime.sqlstat.loaded";
     public static Map<String, Queue<SqlData>> sqlDataQueueMap = new HashMap<String, Queue<SqlData>>();
+    public static Map<String, Object[]> sqlDataArrayMap = new HashMap<String, Object[]>();
     public static int QUEUE_LENGTH = 20000;
 
     /**
@@ -71,21 +72,47 @@ public class VmJdbcInfo {
         }
     }
 
-    public static List<SqlData> loadSqlList(int vmId, int pageSize, int pageCount) {
+    public static Map<String, Object> loadSqlList(int vmId, int pageSize, int pageIndex, int isRefresh, int min, int max) {
+        Map<String, Object> map = new HashMap<String, Object>();
         List<SqlData> list = new ArrayList<SqlData>();
-        Queue queue = sqlDataQueueMap.get(vmId+"");
-        if(queue.size()<=0){
-            return list;
+        Queue queue = sqlDataQueueMap.get(vmId + "");
+        if (queue.size() <= 0) {
+            map.put("List", list);
+            map.put("Total", 0);
+            return map;
         }
-        int i = 0;
-        for (Object obj : queue) {
-            SqlData sqlData = (SqlData) obj;
-            list.add(sqlData);
-            i++;
-            if (i >= 25) {
-                break;
+        Object[] objArr = sqlDataArrayMap.get(vmId + "");
+        if (objArr == null || 0 != isRefresh) { // 参数isRefresh值0表示不刷新，1表示刷新
+            objArr = queue.toArray();
+            sqlDataArrayMap.put(vmId + "", objArr);
+        }
+        Object[] tempArr = null;
+        if (min > 0 || max > 0) {
+            List<SqlData> tempList = new ArrayList<SqlData>();
+            for (Object obj : objArr) {
+                SqlData sqlData = (SqlData) obj;
+                if(min!=0&&min>sqlData.getCost()){
+                    continue;
+                }
+                if(max!=0&&max<sqlData.getCost()){
+                    continue;
+                }
+                tempList.add(sqlData);
+            }
+            tempArr = tempList.toArray();
+        }
+        if(tempArr!=null){
+            objArr = tempArr;
+        }
+        int j = 0;
+        for (int i = objArr.length - 1; i > 0; i--) {
+            if (pageSize * pageIndex > j++ && pageSize * (pageIndex - 1) < j) {
+                SqlData sqlData = (SqlData) objArr[i];
+                list.add(sqlData);
             }
         }
-        return list;
+        map.put("List", list);
+        map.put("Total", objArr.length);
+        return map;
     }
 }

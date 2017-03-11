@@ -9,6 +9,7 @@ import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -50,11 +51,16 @@ public class VmSqlController {
     }
 
     @ResponseBody
-    @RequestMapping("/sql_stat/load_sql_list/{id}/{pgSize}/{pgCount}")
-    public String loadSqlList(@PathVariable("id") int id, @PathVariable("pgSize") int pageSize, @PathVariable("pgCount") int pageCount) {
+    @RequestMapping("/sql_stat/load_sql_list/{id}/{pgSize}/{pgCount}/{isRefresh}")
+    public String loadSqlList(@PathVariable("id") int id, @PathVariable("pgSize") int pageSize,
+                              @PathVariable("pgCount") int pageCount,
+                              @PathVariable("isRefresh") int isRefresh,
+                              @RequestParam("min") int min,
+                              @RequestParam("max") int max
+    ) {
         ResponseData data = new ResponseData();
         try {
-            data.setData(VmJdbcInfo.loadSqlList(id, pageSize, pageCount));
+            data.setData(VmJdbcInfo.loadSqlList(id, pageSize, pageCount,isRefresh,min,max));
             data.setStatus(App.RESPONSE_STATUS_SUCCESS);
             return JSONObject.fromObject(data).toString();
         } catch (Exception e) {
