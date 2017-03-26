@@ -1,9 +1,11 @@
 package cc.cafetime.controller;
 
 import cc.cafetime.App;
+import cc.cafetime.SessionFactory;
 import cc.cafetime.util.UserUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,10 +64,15 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/logout")
+    @ResponseBody
     public String logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (!StringUtils.isEmpty(token)) {
+            SessionFactory.removeSession(token);
+        }
         HttpSession session = request.getSession();
         session.removeAttribute("user");
-        return "redirect:" + servletPath + "/login";
+        return App.RESPONSE_STATUS_SUCCESS;
     }
 
     @RequestMapping(value = "/authcode")
